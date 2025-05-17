@@ -33,7 +33,7 @@ void transposicion(uint8_t* data, size_t size, uint8_t* pass, size_t pass_size) 
 
 void destransposicion(uint8_t* data, size_t size, uint8_t* pass, size_t pass_size) {
     // Para deshacer, hay que hacerlo en orden inverso
-    for (ssize_t i = size - 1; i >= 0; i--) {
+    for (size_t i = size - 1; i >= 0; i--) {
         size_t j = (i + pass[i % pass_size]) % size;
         uint8_t tmp = data[i];
         data[i] = data[j];

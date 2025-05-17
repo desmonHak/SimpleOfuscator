@@ -7,9 +7,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-
-
-#include <math.h>
+#include <unistd.h>
 
 double calcular_entropia(uint8_t *datos, size_t tam);
 void transposicion(uint8_t* data, size_t size, uint8_t* pass, size_t pass_size);

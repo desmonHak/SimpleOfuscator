@@ -3,6 +3,35 @@
 
 #include "SimpleOfuscator.h"
 
+
+static inline int log2_int(size_t n) {
+    if (n == 0) return -1; // indefinido para log2(0)
+
+#if defined(__GNUC__) || defined(__clang__)
+#if SIZE_MAX == UINT64_MAX
+    return 63 - __builtin_clzll(n);
+#else
+    return 31 - __builtin_clz((unsigned int)n);
+#endif
+
+#elif defined(_MSC_VER)
+#include <intrin.h>
+    unsigned long index;
+#if defined(_M_X64) || defined(_M_ARM64)
+    _BitScanReverse64(&index, n);
+#else
+    _BitScanReverse(&index, (unsigned long)n);
+#endif
+    return (int)index;
+
+#else
+    // Fallback portable version
+    int res = 0;
+    while (n >>= 1) res++;
+    return res;
+#endif
+}
+
 double calcular_entropia(uint8_t *datos, size_t tam) {
     // fórmula de la entropía de Shannon
     size_t conteo[256] = {0};
@@ -11,7 +40,7 @@ double calcular_entropia(uint8_t *datos, size_t tam) {
     for (int i = 0; i < 256; i++) {
         if (conteo[i] == 0) continue;
         double p = (double)conteo[i] / tam;
-        entropia -= p * log2(p);
+        entropia -= p * log2_int(p);
     }
     return entropia;
 }
