@@ -1,0 +1,3 @@
+[submodule "LZ77_c"]
+	path = LZ77_c
+	url = https://github.com/desmonHak/LZ77_c.git
