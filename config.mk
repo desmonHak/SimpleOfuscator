@@ -6,8 +6,17 @@ VESRION_C     = 11
 PATH_SRC 	      = src
 PATH_INCLUDE      = include
 PATH_EXAMPLES	  = example
+PATH_LZ77_c		  = ./LZ77_c
 
-INCLUDE_FLAGS = -I. -I$(PATH_INCLUDE)
+
+LINKER_FLAGS  	    = 									\
+	-L.							-lSimpleOfuscator		\
+	-L$(PATH_LZ77_c) 			-lLZ77_c				\
+
+
+INCLUDE_FLAGS = -I. 									\
+				-I$(PATH_INCLUDE)						\
+				-I$(PATH_LZ77_c)/include
 GLOBAL_CFLAGS = -std=c$(VESRION_C) $(INCLUDE_FLAGS) -masm=intel \
 				-D_ExceptionHandler -fdiagnostics-color=always $(DEBUG_LINUX)
 

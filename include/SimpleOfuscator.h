@@ -1,7 +1,7 @@
 #ifndef SIMPLE_OFUSCATOR_H
 #define SIMPLE_OFUSCATOR_H
 
-#include "LZ77_c/LZ77.h"
+#include "LZ77.h"
 
 #include <stdio.h>
 #include <stdint.h>
