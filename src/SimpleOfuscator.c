@@ -44,7 +44,7 @@ void ofusc(
     size_t  *size_of_data_output) 
 {
     // 1. Ofuscar y transponer
-    uint8_t *tmp = malloc(size_of_data);
+    uint8_t *tmp = calloc(size_of_data, sizeof(uint8_t));
     if (!tmp) { *data_output = NULL; *size_of_data_output = 0; return; }
     for (size_t i = 0; i < size_of_data; i++)
         tmp[i] = (uint8_t)(data[i] - pass[i % size_of_pass]);
@@ -53,15 +53,15 @@ void ofusc(
     // 2. Comprimir con LZ77
     LZ77Params params = default_params;
     DerivedParams derived = calculate_derived_params(&params);
-    diccionario = (unsigned char *)malloc(derived.tam_diccionario + derived.max_coincidencia);
-    hash = (unsigned int *)malloc(derived.tam_hash * sizeof(unsigned int));
-    siguiente_enlace = (unsigned int *)malloc(derived.tam_diccionario * sizeof(unsigned int));
+    diccionario = (unsigned char *)calloc(derived.tam_diccionario + derived.max_coincidencia,  sizeof(unsigned char));
+    hash = (unsigned int *)calloc(derived.tam_hash, sizeof(unsigned int));
+    siguiente_enlace = (unsigned int *)calloc(derived.tam_diccionario, sizeof(unsigned int));
     if (!diccionario || !hash || !siguiente_enlace) {
         free(tmp); *data_output = NULL; *size_of_data_output = 0; return;
     }
 
     size_t max_comprimido = size_of_data * 2 + 32;
-    uint8_t *comprimido = malloc(max_comprimido);
+    uint8_t *comprimido = calloc(max_comprimido, sizeof(uint8_t));
     if (!comprimido) {
         free(tmp); free(diccionario); free(hash); free(siguiente_enlace);
         *data_output = NULL; *size_of_data_output = 0; return;
@@ -93,16 +93,16 @@ void desofuc(
     // 1. Descomprimir con LZ77
     LZ77Params params = default_params;
     DerivedParams derived = calculate_derived_params(&params);
-    diccionario = (unsigned char *)malloc(derived.tam_diccionario + derived.max_coincidencia);
-    hash = (unsigned int *)malloc(derived.tam_hash * sizeof(unsigned int));
-    siguiente_enlace = (unsigned int *)malloc(derived.tam_diccionario * sizeof(unsigned int));
+    diccionario = (unsigned char *)calloc(derived.tam_diccionario + derived.max_coincidencia, sizeof(unsigned char));
+    hash = (unsigned int *)calloc(derived.tam_hash * sizeof(unsigned int), sizeof(unsigned char));
+    siguiente_enlace = (unsigned int *)calloc(derived.tam_diccionario * sizeof(unsigned int), sizeof(unsigned char));
     if (!diccionario || !hash || !siguiente_enlace) {
         *data_output = NULL; *size_of_data_output = 0; return;
     }
 
     // El tamaño real descomprimido no lo sabemos, pero puedes pedirlo como argumento o estimarlo
     size_t max_descomprimido = size_of_data * 4 + 32;
-    uint8_t *descomprimido = malloc(max_descomprimido);
+    uint8_t *descomprimido = calloc(max_descomprimido, sizeof(uint8_t));
     if (!descomprimido) {
         free(diccionario); free(hash); free(siguiente_enlace);
         *data_output = NULL; *size_of_data_output = 0; return;
