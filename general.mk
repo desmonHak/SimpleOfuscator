@@ -2,7 +2,7 @@ include config.mk
 
 all: $(TARGET).a libLZ77_c.a
 	ar -t $^
-	gcc $(CFLAGS) $(INCLUDE_FLAGS) $(PATH_EXAMPLES)/code2.c $(LINKER_FLAGS) -o code2.$(EXTENSION)
+	gcc -o code2.$(EXTENSION) $(PATH_EXAMPLES)/code2.c $(CFLAGS) $(LINKER_FLAGS) 
 
 $(TARGET).a: $(OBJECTS) 
 	$(ARR) $(ARR_FLAGS) $@ $^
